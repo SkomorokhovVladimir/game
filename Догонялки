@@ -1,0 +1,231 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace dogon
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int n = Convert.ToInt32(Console.ReadLine());
+            int m = Convert.ToInt32(Console.ReadLine());
+            outputMassive(CreateMassive(n, m));
+        }
+        
+        public static int[,] CreateMassive(int n,int m)
+        {
+            int i = 0, j = 0, a, b, s, d;
+            Random rand = new Random();
+            a = rand.Next(0 , n);
+            b = rand.Next(0 , m);
+            s = rand.Next(0 , n);
+            d = rand.Next(0 , m);
+            int[,] mas = new int[n, m];
+            for (i = 0; i < n; i++)
+            {
+                for (j = 0; j < m; j++)
+                    mas[i, j] = 0; 
+            }
+            mas[a, b] = 1;
+            mas[s, d] = 2;
+            return mas;
+        }
+        public static void outputMassive(int[,] mass)
+        {
+            ConsoleKeyInfo Ki;
+            int Uz, y;
+            Random rand = new Random();
+            int n = mass.GetLength(0);
+            int m = mass.GetLength(1);
+            int a = 0, b = 0, c = 0, d = 0;
+            for(int i = 0; i < n; i++)
+            {
+                for(int j = 0; j < m; j++)
+                {
+                    if (mass[i, j] == 1)
+                    {
+                        a = i;
+                        b = j;
+                    }
+                    if (mass[i, j] == 2)
+                    {
+                        c = i;
+                        d = j;
+                    }
+                }
+            }
+            do
+            {
+                for (int i = 0; i < n; i++)
+                {
+                    for (int j = 0; j < m; j++)
+                    {
+                        Console.Write(mass[i, j]);
+                    }
+                    Console.WriteLine();
+                }
+                Ki = Console.ReadKey();
+                Console.SetCursorPosition(0, 0);
+                String q = Ki.Key.ToString();
+                if (a != 0)
+                {
+                    if (q == "UpArrow")
+                    {
+                        Uz = mass[a, b];
+                        mass[a, b] = mass[a - 1, b];
+                        mass[a - 1, b] = Uz;
+                        a -= 1;
+                    }
+                }
+                if (a != n - 1)
+                {
+                    if (q == "DownArrow")
+                    {
+                        Uz = mass[a, b];
+                        mass[a, b] = mass[a + 1, b];
+                        mass[a + 1, b] = Uz;
+                        a += 1;
+                    }
+                }
+                if (b != m - 1)
+                {
+                    if (q == "RightArrow")
+                    {
+                        Uz = mass[a, b];
+                        mass[a, b] = mass[a, b + 1];
+                        mass[a, b + 1] = Uz;
+                        b += 1;
+                    }
+                }
+                if (b != 0)
+                {
+                    if (q == "LeftArrow")
+                    {
+                        Uz = mass[a, b];
+                        mass[a, b] = mass[a, b - 1];
+                        mass[a, b - 1] = Uz;
+                        b -= 1;
+                    }
+                }
+                y = rand.Next(1, 4);
+
+                if (y == 1)
+                {
+                    if (c == 0)
+                    {
+                        Uz = mass[c, d];
+                        mass[c, d] = mass[c + n - 1, d];
+                        mass[c + n - 1, d] = Uz;
+                        c = c + n - 1;
+                    }
+                    else
+                    {
+                        if (mass[c - 1, d] != 1)
+                        {
+                            Uz = mass[c, d];
+                            mass[c, d] = mass[c - 1, d];
+                            mass[c - 1, d] = Uz;
+                            c -= 1;
+                        }
+                        else
+                        {
+                            Uz = mass[c, d];
+                            mass[c, d] = mass[c + 1, d];
+                            mass[c + 1, d] = Uz;
+                            c += 1;
+                        }
+                    }
+                }
+                if (y == 2)
+                {
+                    if (c == n - 1)
+                    {
+                        Uz = mass[c, d];
+                        mass[c, d] = mass[c - n + 1, d];
+                        mass[c - n + 1, d] = Uz;
+                        c = c - n + 1;
+                    }
+                    else
+                    {
+                        if (mass[c + 1, d] != 1)
+                        {
+                            Uz = mass[c, d];
+                            mass[c, d] = mass[c + 1, d];
+                            mass[c + 1, d] = Uz;
+                            c += 1;
+                        }
+                        else
+                        {
+                            Uz = mass[c, d];
+                            mass[c, d] = mass[c - 1, d];
+                            mass[c - 1, d] = Uz;
+                            c -= 1;
+                        }
+                    }
+                }
+                if (y == 3)
+                {
+                    if (d == m - 1)
+                    {
+                        Uz = mass[c, d];
+                        mass[c, d] = mass[c, d - m + 1];
+                        mass[c, d - m + 1] = Uz;
+                        d = d - m + 1;
+                    }
+                    else
+                    {
+                        if (mass[c, d + 1] != 1)
+                        {
+                            Uz = mass[c, d];
+                            mass[c, d] = mass[c, d + 1];
+                            mass[c, d + 1] = Uz;
+                            d += 1;
+                        }
+                        else
+                        {
+                            Uz = mass[c, d];
+                            mass[c, d] = mass[c, d - 1];
+                            mass[c, d - 1] = Uz;
+                            d -= 1;
+                        }
+                    }
+                }
+                if (y == 4)
+                {
+                    if (d == 0)
+                    {
+                        Uz = mass[c, d];
+                        mass[c, d] = mass[c, d + m - 1];
+                        mass[c, d + m - 1] = Uz;
+                        d = d + m - 1;
+                    }
+                    else
+                    {
+                        if (mass[c, d - 1] != 1)
+                        {
+                            Uz = mass[c, d];
+                            mass[c, d] = mass[c, d - 1];
+                            mass[c, d - 1] = Uz;
+                            d -= 1;
+                        }
+                        else
+                        {
+                            Uz = mass[c, d];
+                            mass[c, d] = mass[c, d + 1];
+                            mass[c, d + 1] = Uz;
+                            d += 1;
+                        }
+                    }
+                }
+            }
+            while (mass[c, d] == 2);
+            Console.Clear();
+            Console.WriteLine("Найс");
+            Console.ReadKey();
+        }
+
+    }
+}
